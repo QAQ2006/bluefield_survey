@@ -1,0 +1,8 @@
+{
+  "name": "bluefield-survey",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "python api/submit.py"
+  },
+  "dependencies": {}
+}
