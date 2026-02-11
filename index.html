@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>蓝田学园公共空间优化意见收集</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">蓝田学园公共空间优化意见收集</h1>
+        <div id="form-container">
+            <form id="feedbackForm" class="p-4 border rounded">
+                <div class="mb-3">
+                    <label class="form-label">姓名（选填）</label>
+                    <input type="text" id="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">你的意见 *</label>
+                    <textarea id="content" class="form-control" rows="5" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">意见类型</label>
+                    <input type="text" id="category" class="form-control" value="建议">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100">提交意见</button>
+            </form>
+        </div>
+        <div id="success-message" style="display:none;">
+            <div class="alert alert-success text-center mt-4">
+                <h3>✅ 感谢提交！</h3>
+                <p>你的意见对我们非常重要！</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                name: document.getElementById('name').value,
+                content: document.getElementById('content').value,
+                category: document.getElementById('category').value
+            };
+            
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('success-message').style.display = 'block';
+                } else {
+                    const error = await response.json();
+                    alert('提交失败：' + error.error);
+                }
+            } catch (err) {
+                alert('网络错误，请重试');
+            }
+        });
+    </script>
+</body>
+</html>
